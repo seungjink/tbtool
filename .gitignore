@@ -2,3 +2,4 @@ playground
 .vscode
 _src
 _manual
+__pycache__/

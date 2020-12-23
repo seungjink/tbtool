@@ -4,7 +4,7 @@ from collections import namedtuple
 class Basis:
     """
     Set basis information during the calculation.
-    
+
     :param ``quantumnumber``: Description of the parameter
     :type ``quantumnumber``: Union[str, list]
 
@@ -13,6 +13,7 @@ class Basis:
        basis = Basis(["spin", "orbital", "site"])
        basis = Basis("orbital")
     """
+
     def __init__(self, quantumnumber):
         try:
             iter(quantumnumber)
@@ -25,7 +26,7 @@ class Basis:
     def addbasis(self, *args):
         """
         Add basis to current list.
-        
+
         Parameters
         ----------
         args : list
@@ -53,13 +54,13 @@ class Basis:
             exit("[Error] length of basis and args does not match.\n"
                  "Please check the number of arguments.")
         self.basis.append(newbasis)
-    
+
     def getquantumnumber(self):
         """
         :return: Field name
         """
         return self.state._fields
-    
+
     def getdimension(self):
         """
         :return: Current size of basis
@@ -70,14 +71,14 @@ class Basis:
         """
         Exchange the order between two basis
 
-        :param integer i: First index
-        :param integer j: Second index
-        
+        Args:
+            i (int): First index
+            j (int): Second index
+
         """
         self.basis[i], self.basis[j] = self.basis[j], self.basis[i]
-    
-    def permute(self, permutation):
 
+    def permute(self, permutation):
         """
         Exchange the order using permutation index.
 
@@ -101,12 +102,3 @@ class Basis:
                  "to your basis dimension")
         else:
             self.basis = [self.basis[i] for i in permutation]
-
-bs = Basis(["spin", "orbital", "site"])
-bs.addbasis(0, "px", (0,0,1))
-bs.addbasis(1, "s", (1,1,1))
-print(bs.basis)
-
-bs = Basis("orbital")
-bs.addbasis("dxy")
-print(bs.basis)

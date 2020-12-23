@@ -10,6 +10,9 @@ Welcome to tbtool's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   modules
+   tbtool
+
 
 Indices and tables
 ==================
