@@ -1,0 +1,31 @@
+[General]
+calctype = TB
+
+spinpol = False
+ham_onsite = True
+ham_soc = False
+ham_sk = True
+
+[Atoms]
+lattice = Hexagonal
+symbol = ('C')
+latticeconstant = {'a' : 4.113, 'c' : 12.0}
+pbc = (1,1,0)
+size = (1,1,1)
+xtal_name = 'honeycomb'
+bravais_basis = [[1. / 6., 1. / 3., 0],
+                 [2. / 3., 5. / 6., 0],
+                 [1. / 6., 5. / 6., 0]]
+element_basis = (0, 0, 0)
+
+[SOC]
+(0,1,2) = {'s' : 0.0, 'p' : 0.0, 'd' : 0.0}
+
+[Orbital]
+(0, 1, 2) = ['C', 1.5, ('s',)]
+
+[Onsite]
+(0, 1, 2) = {'s' : 0.5}
+
+[Hopping]
+('C', 'C', 1) = {'sss':	-0.10}
