@@ -1,5 +1,5 @@
 playground
+__pycache__/
 .vscode
 _src
 _manual
-__pycache__/
