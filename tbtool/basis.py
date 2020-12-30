@@ -5,13 +5,12 @@ class Basis:
     """
     Set basis information during the calculation.
 
-    :param ``quantumnumber``: Description of the parameter
-    :type ``quantumnumber``: Union[str, list]
+    Args:
+        quantumstate (list[str] or str): Set of index names for each basis state.
 
-    The size should match to the that of quantumnumber.::
-
-       basis = Basis(["spin", "orbital", "site"])
-       basis = Basis("orbital")
+    Example:
+       >>> basis = Basis(["spin", "orbital", "site"])
+       >>> basis = Basis("orbital")
     """
 
     def __init__(self, quantumnumber):
@@ -23,29 +22,22 @@ class Basis:
         self.basis = []
         self.state = namedtuple("state", self._quantumnumber)
 
-    def addbasis(self, *args):
+    def add(self, *args):
         """
         Add basis to current list.
 
-        Parameters
-        ----------
-        args : list
-            List of names of quantumnumbers
+        Args:
+            *args : names of quantumnumbers
 
 
-        The size should match to the that of quantumnumber.
+        The size should match to that of quantumnumber.
 
-        Example
-        -------
-
-        .. code-block:: python
-
+        Example:
             >>> bs = Basis(["spin", "orbital", "site"])
-            >>> bs.addbasis(0, "px", (0,0,1))
-            >>> bs.addbasis(1, "s", (1,1,1))
+            >>> bs.add(0, "px", (0,0,1))
+            >>> bs.add(1, "s", (1,1,1))
             >>> print(bs.basis)
             [state(spin=0, orbital='px', site=(0, 0, 1)), state(spin=1, orbital='s', site=(1, 1, 1))]
-
         """
         try:
             newbasis = self.state(*args)
@@ -55,15 +47,17 @@ class Basis:
                  "Please check the number of arguments.")
         self.basis.append(newbasis)
 
-    def getquantumnumber(self):
+    def getfieldname(self):
         """
-        :return: Field name
+        Returns:
+            list[str]: Name of each field
         """
         return self.state._fields
 
     def getdimension(self):
         """
-        :return: Current size of basis
+        Returns:
+            int: Number of basis funcitons
         """
         return len(self.basis)
 
@@ -74,7 +68,6 @@ class Basis:
         Args:
             i (int): First index
             j (int): Second index
-
         """
         self.basis[i], self.basis[j] = self.basis[j], self.basis[i]
 
@@ -86,11 +79,10 @@ class Basis:
             permutation (list[int]): Permutation index
 
         Example:
-
             >>> b = Basis("orbitals")
-            >>> b.addbasis("px")
-            >>> b.addbasis("s")
-            >>> b.addbasis("dxy")
+            >>> b.add("px")
+            >>> b.add("s")
+            >>> b.add("dxy")
             >>> print(b.basis)
             [state(orbitals='px'), state(orbitals='s'), state(orbitals='dxy')]
             >>> b.permute([0,2,1])
@@ -98,7 +90,7 @@ class Basis:
             [state(orbitals='px'), state(orbitals='dxy'), state(orbitals='s')]
         """
         if len(permutation) != self.getdimension():
-            exit("[Error] The length of permutation matrix does not match\n"
+            exit("[Error] The length of permutation array does not match\n"
                  "to your basis dimension")
         else:
             self.basis = [self.basis[i] for i in permutation]

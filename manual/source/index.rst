@@ -7,11 +7,11 @@ Welcome to tbtool's documentation!
 ==================================
 
 .. toctree::
+   :caption: Theme Documentation
    :maxdepth: 2
-   :caption: Contents:
 
-   modules
-   tbtool
+   reference/index
+
 
 
 Indices and tables
