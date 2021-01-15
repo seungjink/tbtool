@@ -34,7 +34,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
-    'sphinx_toggleprompt'
+    'sphinx_toggleprompt',
+    'sphinxcontrib.katex'
 ]
 autosummary_generate = True
 

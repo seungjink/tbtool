@@ -27,6 +27,8 @@
     
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/katex-math.css" />
     
   <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
 
@@ -35,8 +37,12 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/toggleprompt.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js"></script>
+    <script src="../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tbtool.io" href="tbtool.io.html" />
     <link rel="prev" title="tbtool.hamiltonian.Hamiltonian" href="tbtool.hamiltonian.Hamiltonian.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -104,8 +110,24 @@
                             <a href="tbtool.basis.html">tbtool.basis</a>
                         </li>
                     
+                        <li class="">
+                            <a href="tbtool.calculator.html">tbtool.calculator</a>
+                        </li>
+                    
                         <li class="active">
                             <a href="tbtool.hamiltonian.html">tbtool.hamiltonian</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="tbtool.io.html">tbtool.io</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="tbtool.kpoints.html">tbtool.kpoints</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="tbtool.unit.html">tbtool.unit</a>
                         </li>
                     
                     </ul>
@@ -145,13 +167,7 @@
 <dl class="py class">
 <dt id="tbtool.hamiltonian.Wannier">
 <em class="property">class </em><code class="sig-prename descclassname">tbtool.hamiltonian.</code><code class="sig-name descname">Wannier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hopping</span></em>, <em class="sig-param"><span class="n">cell</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.hamiltonian.Wannier" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt id="tbtool.hamiltonian.Wannier.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hopping</span></em>, <em class="sig-param"><span class="n">cell</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.hamiltonian.Wannier.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
+<dd><p>Bases: <a class="reference internal" href="tbtool.hamiltonian.Hamiltonian.html#tbtool.hamiltonian.Hamiltonian" title="tbtool.hamiltonian.Hamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">tbtool.hamiltonian.Hamiltonian</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable table autosummary">
 <colgroup>
@@ -159,13 +175,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tbtool.hamiltonian.Wannier.__init__" title="tbtool.hamiltonian.Wannier.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(hopping, cell[, filename])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(hopping, cell[, filename])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code>(kpt)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagonalize</span></code>(kpt[, eigvals_only])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code>(kpt[, eigvals_only])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code>(kpt)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -193,6 +209,7 @@
               <div class='prev-next-bottom'>
                 
     <a class='left-prev' id="prev-link" href="tbtool.hamiltonian.Hamiltonian.html" title="previous page">tbtool.hamiltonian.Hamiltonian</a>
+    <a class='right-next' id="next-link" href="tbtool.io.html" title="next page">tbtool.io</a>
 
               </div>
               

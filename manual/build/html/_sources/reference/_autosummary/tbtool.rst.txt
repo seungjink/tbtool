@@ -29,5 +29,9 @@
    :recursive:
 
    tbtool.basis
+   tbtool.calculator
    tbtool.hamiltonian
+   tbtool.io
+   tbtool.kpoints
+   tbtool.unit
 

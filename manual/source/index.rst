@@ -8,7 +8,7 @@ Welcome to tbtool's documentation!
 
 .. toctree::
    :caption: Theme Documentation
-   :maxdepth: 2
+   :maxdepth: 4
 
    reference/index
 

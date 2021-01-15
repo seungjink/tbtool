@@ -9,7 +9,6 @@ tbtool.hamiltonian.Hamiltonian
    :inherited-members:                          
 
    
-   .. automethod:: __init__
 
    
    .. rubric:: Methods
@@ -17,8 +16,8 @@ tbtool.hamiltonian.Hamiltonian
    .. autosummary::
    
       ~Hamiltonian.__init__
+      ~Hamiltonian.diagonalize
       ~Hamiltonian.get
-      ~Hamiltonian.solve
    
    
 

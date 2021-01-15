@@ -9,7 +9,6 @@ tbtool.hamiltonian.Wannier
    :inherited-members:                          
 
    
-   .. automethod:: __init__
 
    
    .. rubric:: Methods
@@ -17,8 +16,8 @@ tbtool.hamiltonian.Wannier
    .. autosummary::
    
       ~Wannier.__init__
+      ~Wannier.diagonalize
       ~Wannier.get
-      ~Wannier.solve
    
    
 

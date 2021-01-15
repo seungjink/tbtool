@@ -9,7 +9,6 @@ tbtool.basis.Basis
    :inherited-members:                          
 
    
-   .. automethod:: __init__
 
    
    .. rubric:: Methods
