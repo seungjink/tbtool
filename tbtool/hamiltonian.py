@@ -46,7 +46,7 @@ class Wannier(Hamiltonian):
 class Openmx(Hamiltonian):
     TYPE = "OpenMX Hamiltonian"
 
-    def __init__(self, mxscfout):
+    def __init__(self, mxscfout, unit='ev'):
         self.scfout = mxscfout
         self.scfout.readfile()
         self.hopping, self.overlap, self.cell, self.dimension, self.chemp \

@@ -69,7 +69,7 @@ def integrate_delta_2d_tetra(kmesh, bandenergy, fn, w):
     tetrahedron_count = tri.simplices.shape[0]
 
     # Generate fn * dos values 
-    results = np.zeros(w_count)
+    results = np.zeros([fn_count, w_count])
 
     # min and max energy of each band
     band_emin = np.amin(bandenergy, axis=0)
@@ -126,7 +126,7 @@ def integrate_delta_2d_tetra(kmesh, bandenergy, fn, w):
                     f3 * (energy - w1) / w31
                 ) * 0.5
 
-                results[idx] +=  np.sum(tmpdos * tmpfn, axis=1)
+                results[:, idx] +=  np.sum(tmpdos * tmpfn, axis=1, dtype=float)
 
                 # Tetra 3
                 idx_tetra = np.logical_and(
@@ -150,10 +150,30 @@ def integrate_delta_2d_tetra(kmesh, bandenergy, fn, w):
                     f3 * ( (energy - w1) / w31 + (energy - w2) / w32)
                 ) * 0.5
 
-                results[idx] +=  np.sum(tmpdos * tmpfn, axis=1)
+                results[:, idx] +=  np.sum(tmpdos * tmpfn, axis=1, dtype=float)
 
                 # Tetra 4
                 # No Contribution
 
     return results
 
+#
+#def integrate_step_2d_tetra(kmesh, bandenergy, fn, w):
+#
+#    """Integrate step function by 2d tetrahecron method.
+#
+#    This function calculates the following step funciton integral on the Brillouin zone using 2d tetrahedron method.
+#
+#    .. math::
+#        \\begin{aligned}
+#            g(\\omega) &= \\sum_{n=1}^{band} \\frac{1}{V_G} \\int_{BZ} d^2 k f_{n\\bm{k}}(\\omega_{n\\bm{k}}) \\theta(\\omega - \\omega_{n\\bm{k}}) \\\\
+#                       &= \\sum_{\\tau}^{N_{\\tau}} f_{\\tau}(\omega) D_{\\tau}(\\omega)
+#        \\end{aligned}
+#
+#    Args:
+#        kmesh (numpy.ndarray): [Nmesh, 2] shaped mesh array.
+#        bandenergy (numpy.ndarray): [Nmesh, Nband] shaped band energy.
+#        fn (numpy.ndarray): [Nmesh, Nband] shaped function value.
+#        w (float or list): function values to be calculated.
+#
+#    """

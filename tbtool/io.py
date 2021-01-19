@@ -4,6 +4,7 @@ import struct
 from pathlib import Path
 import numpy as np
 import tbtool.hamiltonian as hamiltonian
+import tbtool.basis as basis
 import tbtool.unit as unit
 
 logging.basicConfig(
@@ -101,12 +102,19 @@ class ByteReader(object):
 # The behaviour os SpinP_switch has been changed since OpenMX 3.9
 # SpinP_switch -> SpinP_switch + 4*version, version= 0 ~ 3
 
-def read_openmx(scfout, version, endian="little", pathtype="relative"):
+def read_openmx_hamiltonian(scfout, version, endian="little", pathtype="relative"):
     file_scfout = Path(sys.argv[0]).parent / scfout
     if version == 3.9:
         return hamiltonian.Openmx(MXscfoutV3(file_scfout, endian=endian, pathtype=pathtype))
     elif version == 3.8:
         return hamiltonian.Openmx(MXscfoutV0(file_scfout, endian=endian, pathtype=pathtype))
+
+def read_openmx_basis(scfout, version, endian="little", pathtype="relative"):
+    file_scfout = Path(sys.argv[0]).parent / scfout
+    if version == 3.9:
+        return basis.Openmx(MXscfoutV3(file_scfout, endian=endian, pathtype=pathtype))
+    elif version == 3.8:
+        return basis.Openmx(MXscfoutV0(file_scfout, endian=endian, pathtype=pathtype))
 
 class MXscfoutBase(object):
     
@@ -141,6 +149,7 @@ class MXscfoutBase(object):
         self.dipole_moment_background = None
         self.Valence_Electrons = None
         self.Total_SpinS = None
+        self.inputfile = []
    
     @property
     def scfout(self):
@@ -177,6 +186,7 @@ class MXscfoutBase(object):
         self.dipole_moment_background = None
         self.Valence_Electrons = None
         self.Total_SpinS = None
+        self.inputfile = []
     
     def chkfile(self):
         """Check if file exists.
@@ -397,7 +407,7 @@ class MXscfoutV3(MXscfoutBase):
         self.iDM = None
         self.MXVERSION=3.9
 
-    def readfile(self):
+    def readfile(self, write_input=False):
         self.chkfile()
         file_scfout = Path(self.scfout)
         data = file_scfout.read_bytes()
@@ -589,7 +599,9 @@ class MXscfoutV3(MXscfoutBase):
         with open(inputfile, "w") as fp:
             for i in range(res):
                 res = bytereader.read("str", 256)
-                fp.write(res + '\n')
+                if write_input:
+                    fp.write(res + '\n')
+                self.inputfile.append(res)
 
 class MXscfoutV0(MXscfoutBase):
     """scfout reader for OpenMX <= 3.8
@@ -612,7 +624,7 @@ class MXscfoutV0(MXscfoutBase):
         self.OLPpoz = None
         self.MXVERSION = 3.8
 
-    def readfile(self):
+    def readfile(self, write_input=False):
         self.chkfile()
         file_scfout = Path(self.scfout)
         data = file_scfout.read_bytes()
@@ -778,64 +790,58 @@ class MXscfoutV0(MXscfoutBase):
         with open(inputfile, "w") as fp:
             for i in range(res):
                 res = bytereader.read("str", 256)
-                fp.write(res + '\n')
+                if write_input:
+                    fp.write(res + '\n')
+                self.inputfile.append(res)
 
-class MXinput(object):
-    """Read the openmx input file
-
-    """
-    DATATYPE = {"int" : 4,
-                "double" : 8,
-                "str" : 1}
-    def __init__(self, inputfile, pathtype="relative"):
-        self._inputfile = inputfile
-        self.pathtype = pathtype
-
-    @property
-    def inputfile(self):
-        return self._inputfile
-
-    def chkfile(self):
-        file_input = Path(self.inputfile)
-        logger.info("Checking %s exists...", file_input.absolute())
-        if file_input.is_file():
-            logger.info("Found %s .", file_input.absolute())
-        else:
-            logger.info("File %s not found.", file_input.absolute())
-            logger.info("Check your path for .scfout file.")
-            exit(1)
+#class MXinput(object):
+#    """Read the openmx input file
+#
+#    """
+#    def __init__(self, inputfile, pathtype="relative"):
+#        self._inputfile = inputfile
+#        self.pathtype = pathtype
+#
+#    @property
+#    def inputfile(self):
+#        return self._inputfile
+#
+#    def chkfile(self):
+#        file_input = Path(self.inputfile)
+#        logger.info("Checking %s exists...", file_input.absolute())
+#        if file_input.is_file():
+#            logger.info("Found %s .", file_input.absolute())
+#        else:
+#            logger.info("File %s not found.", file_input.absolute())
+#            logger.info("Check your path for .scfout file.")
+#            exit(1)
     
-    def readfile(self):
-        self.chkfile()
-        file_input= Path(self.inputfile)
-        data = file_input.read_text()
+def read_openmx_input(data):
 
-        inputdata = {}
+    inputdata = {}
 
-        # skip <AAAA.BBB.CC ~~~~ AAAA.BBB.CC> block.
-        # Read only X.X.X ooo lines.
-        isblock = False
-        for line in data.rsplit('\n'):
-            line = line.strip()
+    # skip <AAAA.BBB.CC ~~~~ AAAA.BBB.CC> block.
+    # Read only X.X.X ooo lines.
+    isblock = False
+    for line in data:
+        line = line.strip()
 
-            if line and line[0] != "#":
-                if line[0] == "<":
-                    key = line.split("<", 1)[1].split("#",1)[0].rstrip().lower()
-                    blocktmp = []
-                    isblock = True
-                    continue
-                if isblock and line[-1] == ">":
-                    isblock = False
-                    inputdata[key] = blocktmp
-                    continue
-                elif isblock:
-                    val = line.split("#", 1)[0]
-                    blocktmp.append(val)
-                    continue
+        if line and line[0] != "#":
+            if line[0] == "<":
+                key = line.split("<", 1)[1].split("#",1)[0].rstrip().lower()
+                blocktmp = []
+                isblock = True
+                continue
+            if isblock and line[-1] == ">":
+                isblock = False
+                inputdata[key] = blocktmp
+                continue
+            elif isblock:
+                val = line.split("#", 1)[0]
+                blocktmp.append(val)
+                continue
 
-                if not isblock:
-                    keyval = line.split("#", 1)[0].split()
-                    inputdata[keyval[0].lower()] = keyval[1:][0]
-        return inputdata
-
-        
+            if not isblock:
+                keyval = line.split("#", 1)[0].split()
+                inputdata[keyval[0].lower()] = keyval[1:][0]
+    return inputdata
