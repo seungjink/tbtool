@@ -119,7 +119,7 @@ class Openmx:
         inputfile = mxscfout.inputfile
         data = tbtool.io.read_openmx_input(inputfile)
         atom_count = int(data['atoms.number'])
-        spin_polarization = data['scf.spinpolarization']
+        spin_polarization = data['scf.spinpolarization'].lower()
         if spin_polarization == 'on' or spin_polarization == 'off':
             self.basis = Basis(['atom', 'orbital'])
             spinpol = 1
@@ -163,6 +163,21 @@ class Openmx:
             orbital = wavefunction[:-1]
             coeff = wavefunction[-1]
             result[i, self.basis.getindex(*orbital)] = coeff
+        return result
+
+    def get_projector_by_angle(self, wavefunctions):
+
+        result = np.zeros((len(wavefunctions), self.basis.getdimension()))
+        spinshift = self.basis.getdimension()/2
+
+        for i, wavefunction in enumerate(wavefunctions):
+            orbital, = wavefunction[:2]
+            theta, phi = wavefunction[2:4]
+            coeff = wavefunction[-1]
+            upspin_idx = self.basis.getindex(*orbital) 
+            downspin_idx = upspin_idx + spinshift
+            result[i, upspin] = coeff * np.exp(-1j*np.radians(phi)/2) * np.cos(np.radians(theta)/2)
+            result[i, downspin] = coeff * np.exp(1j*np.radians(phi)/2) * np.sin(np.radians(theta)/2)
         return result
 
     

@@ -7,6 +7,8 @@ import tbtool.hamiltonian as hamiltonian
 import tbtool.basis as basis
 import tbtool.unit as unit
 
+OPENMX_LATEST_VERSION = 3
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(message)s - %(name)s',
@@ -301,7 +303,7 @@ class MXscfoutBase(object):
         elif self.SpinP_switch == 3:
             # self.ncn = Global cell index where overlap != 0.
             # effective_cell = tabulate all global index where overlap is non-zeor
-            effective_cell = np.array(np.unique(self.ncn), dtype=int)
+            effective_cell = np.array(np.unique(np.concatenate(self.ncn)), dtype=int)
 
             ham = np.zeros([effective_cell.shape[0], dimension, dimension], dtype=np.complex)
             olp = np.zeros([effective_cell.shape[0], dimension, dimension], dtype=np.complex)
@@ -423,7 +425,7 @@ class MXscfoutV3(MXscfoutBase):
 
         # Check Endian 
         # Todo : Checking endian using raw value is not a strict way of doing this.
-        if (tmpval < 0 or tmpval > constant.LATEST_VERSION * 4 + 3):
+        if (tmpval < 0 or tmpval > OPENMX_LATEST_VERSION * 4 + 3):
             logger.error("\u2500\u2500\u2500\u2500\u2500 ERROR \u2500\u2500\u2500\u2500\u2500")
             logger.error("Mismatch of endians.")
             logger.error("Input endian : {}".format(self.endian))
@@ -794,28 +796,6 @@ class MXscfoutV0(MXscfoutBase):
                     fp.write(res + '\n')
                 self.inputfile.append(res)
 
-#class MXinput(object):
-#    """Read the openmx input file
-#
-#    """
-#    def __init__(self, inputfile, pathtype="relative"):
-#        self._inputfile = inputfile
-#        self.pathtype = pathtype
-#
-#    @property
-#    def inputfile(self):
-#        return self._inputfile
-#
-#    def chkfile(self):
-#        file_input = Path(self.inputfile)
-#        logger.info("Checking %s exists...", file_input.absolute())
-#        if file_input.is_file():
-#            logger.info("Found %s .", file_input.absolute())
-#        else:
-#            logger.info("File %s not found.", file_input.absolute())
-#            logger.info("Check your path for .scfout file.")
-#            exit(1)
-    
 def read_openmx_input(data):
 
     inputdata = {}
