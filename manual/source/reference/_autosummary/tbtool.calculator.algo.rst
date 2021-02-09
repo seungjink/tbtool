@@ -1,4 +1,4 @@
-﻿tbtool.calculator.algo
+tbtool.calculator.algo
 ======================
 
 .. automodule:: tbtool.calculator.algo
@@ -15,6 +15,7 @@
       :toctree:                                         
    
       integrate_delta_2d_tetra
+      integrate_delta_3d_tetra
    
    
 

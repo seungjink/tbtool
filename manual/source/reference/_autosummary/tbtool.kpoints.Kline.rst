@@ -1,4 +1,4 @@
-tbtool.kpoints.Kline
+﻿tbtool.kpoints.Kline
 ====================
 
 .. currentmodule:: tbtool.kpoints
@@ -16,7 +16,7 @@ tbtool.kpoints.Kline
    .. autosummary::
    
       ~Kline.__init__
-      ~Kline.generate_mesh
+      ~Kline.get
    
    
 

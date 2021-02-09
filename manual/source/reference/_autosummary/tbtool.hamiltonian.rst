@@ -20,6 +20,7 @@ tbtool.hamiltonian
       :template: custom-class-template.rst               
    
       Hamiltonian
+      Openmx
       Wannier
    
    

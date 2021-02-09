@@ -1,4 +1,4 @@
-tbtool.basis
+﻿tbtool.basis
 ============
 
 .. automodule:: tbtool.basis
@@ -20,6 +20,7 @@ tbtool.basis
       :template: custom-class-template.rst               
    
       Basis
+      Openmx
    
    
 

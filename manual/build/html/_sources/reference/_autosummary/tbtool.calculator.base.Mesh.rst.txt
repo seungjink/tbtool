@@ -1,9 +1,9 @@
-tbtool.calculator.basic.Eigenvalues
-===================================
+tbtool.calculator.base.Mesh
+===========================
 
-.. currentmodule:: tbtool.calculator.basic
+.. currentmodule:: tbtool.calculator.base
 
-.. autoclass:: Eigenvalues
+.. autoclass:: Mesh
    :members:                                    
    :show-inheritance:                           
    :inherited-members:                          
@@ -15,8 +15,8 @@ tbtool.calculator.basic.Eigenvalues
 
    .. autosummary::
    
-      ~Eigenvalues.__init__
-      ~Eigenvalues.calculate
+      ~Mesh.__init__
+      ~Mesh.save
    
    
 

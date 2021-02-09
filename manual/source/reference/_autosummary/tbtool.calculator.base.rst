@@ -1,7 +1,7 @@
-tbtool.calculator.basic
-=======================
+tbtool.calculator.base
+======================
 
-.. automodule:: tbtool.calculator.basic
+.. automodule:: tbtool.calculator.base
   
    
    
@@ -19,8 +19,10 @@ tbtool.calculator.basic
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      Eigen
       Eigenvalues
       Eigenvectors
+      Mesh
    
    
 

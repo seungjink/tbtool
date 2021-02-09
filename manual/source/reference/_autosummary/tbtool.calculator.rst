@@ -30,7 +30,7 @@ tbtool.calculator
 
    tbtool.calculator.algo
    tbtool.calculator.band
-   tbtool.calculator.basic
+   tbtool.calculator.base
    tbtool.calculator.berry
    tbtool.calculator.dos
 

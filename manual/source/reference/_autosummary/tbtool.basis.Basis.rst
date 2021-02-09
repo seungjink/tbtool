@@ -19,6 +19,7 @@ tbtool.basis.Basis
       ~Basis.add
       ~Basis.getdimension
       ~Basis.getfieldname
+      ~Basis.getindex
       ~Basis.permute
       ~Basis.swap
    

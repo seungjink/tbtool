@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbtool.calculator.basic.Eigenvalues &#8212; tbtool 0.1 documentation</title>
+    <title>tbtool.calculator.base.Eigen &#8212; tbtool 0.1 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -42,8 +42,8 @@
     <script src="../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tbtool.calculator.basic.Eigenvectors" href="tbtool.calculator.basic.Eigenvectors.html" />
-    <link rel="prev" title="tbtool.calculator.basic" href="tbtool.calculator.basic.html" />
+    <link rel="next" title="tbtool.calculator.base.Eigenvalues" href="tbtool.calculator.base.Eigenvalues.html" />
+    <link rel="prev" title="tbtool.calculator.base" href="tbtool.calculator.base.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -106,10 +106,6 @@
                     <a href="tbtool.html">tbtool</a>
                     <ul>
                     
-                        <li class="">
-                            <a href="tbtool.basis.html">tbtool.basis</a>
-                        </li>
-                    
                         <li class="active">
                             <a href="tbtool.calculator.html">tbtool.calculator</a>
                         </li>
@@ -162,12 +158,21 @@
               
               <div>
                 
-  <div class="section" id="tbtool-calculator-basic-eigenvalues">
-<h1>tbtool.calculator.basic.Eigenvalues<a class="headerlink" href="#tbtool-calculator-basic-eigenvalues" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tbtool-calculator-base-eigen">
+<h1>tbtool.calculator.base.Eigen<a class="headerlink" href="#tbtool-calculator-base-eigen" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="tbtool.calculator.basic.Eigenvalues">
-<em class="property">class </em><code class="sig-prename descclassname">tbtool.calculator.basic.</code><code class="sig-name descname">Eigenvalues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hamiltonian</span></em>, <em class="sig-param"><span class="n">kpts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.calculator.basic.Eigenvalues" title="Permalink to this definition">¶</a></dt>
+<dt id="tbtool.calculator.base.Eigen">
+<em class="property">class </em><code class="sig-prename descclassname">tbtool.calculator.base.</code><code class="sig-name descname">Eigen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hamiltonian</span></em>, <em class="sig-param"><span class="n">kpts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.calculator.base.Eigen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Calculator for eigenvalues and eigenvectors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hamiltonian</strong> (<em>tbtool.hamiltonian</em>) – tbtool.hamiltonian object</p></li>
+<li><p><strong>kpts</strong> (<em>array_like</em>) – list of k points where eigenvalues are calculated.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable table autosummary">
 <colgroup>
@@ -178,11 +183,25 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(hamiltonian, kpts)</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tbtool.calculator.base.Eigen.calculate" title="tbtool.calculator.base.Eigen.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>()</p></td>
+<td><p>Diagonalize Hamiltonian on given mesh</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt id="tbtool.calculator.base.Eigen.calculate">
+<code class="sig-name descname">calculate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.calculator.base.Eigen.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Diagonalize Hamiltonian on given mesh</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(eigenvalues, eigenvectors)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -193,8 +212,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="tbtool.calculator.basic.html" title="previous page">tbtool.calculator.basic</a>
-    <a class='right-next' id="next-link" href="tbtool.calculator.basic.Eigenvectors.html" title="next page">tbtool.calculator.basic.Eigenvectors</a>
+    <a class='left-prev' id="prev-link" href="tbtool.calculator.base.html" title="previous page">tbtool.calculator.base</a>
+    <a class='right-next' id="next-link" href="tbtool.calculator.base.Eigenvalues.html" title="next page">tbtool.calculator.base.Eigenvalues</a>
 
               </div>
               

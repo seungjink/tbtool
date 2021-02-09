@@ -33,6 +33,12 @@ class Eigenvectors:
         return result
 
 class Eigen:
+    """Calculator for eigenvalues and eigenvectors
+
+    Args:
+        hamiltonian (tbtool.hamiltonian): tbtool.hamiltonian object
+        kpts (array_like): list of k points where eigenvalues are calculated.
+    """
 
     def __init__(self, hamiltonian, kpts):
         self.hamiltonian = hamiltonian
@@ -41,6 +47,11 @@ class Eigen:
         self.eigenvectors = None
 
     def calculate(self):
+        """Diagonalize Hamiltonian on given mesh
+
+        Returns:
+            tuple: (eigenvalues, eigenvectors)
+        """
         result_en = []
         result_ev = []
         for kpt in self.kpts:

@@ -34,10 +34,11 @@ class Wannier(Hamiltonian):
             np.multiply(self.hopping, exp_ikr[:, np.newaxis, np.newaxis]),
             axis=0
         )
-        return ham
+        olp = np.eye(ham.shape[0] * ham.shape[1]).reshape((ham.shape))
+        return ham, olp
 
     def diagonalize(self, kpt, eigvals_only=True):
-        ham = self.get(kpt)
+        ham = self.get(kpt)[0]
         if eigvals_only:
             return eigvalsh(ham)
         else:

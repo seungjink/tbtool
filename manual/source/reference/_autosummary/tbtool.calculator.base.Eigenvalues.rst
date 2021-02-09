@@ -1,9 +1,9 @@
-tbtool.calculator.basic.Eigenvectors
-====================================
+tbtool.calculator.base.Eigenvalues
+==================================
 
-.. currentmodule:: tbtool.calculator.basic
+.. currentmodule:: tbtool.calculator.base
 
-.. autoclass:: Eigenvectors
+.. autoclass:: Eigenvalues
    :members:                                    
    :show-inheritance:                           
    :inherited-members:                          
@@ -15,8 +15,8 @@ tbtool.calculator.basic.Eigenvectors
 
    .. autosummary::
    
-      ~Eigenvectors.__init__
-      ~Eigenvectors.calculate
+      ~Eigenvalues.__init__
+      ~Eigenvalues.calculate
    
    
 
