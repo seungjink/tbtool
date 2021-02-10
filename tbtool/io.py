@@ -104,10 +104,10 @@ class ByteReader(object):
 # The behaviour os SpinP_switch has been changed since OpenMX 3.9
 # SpinP_switch -> SpinP_switch + 4*version, version= 0 ~ 3
 
-def read_openmx_hamiltonian(scfout, version, endian="little", pathtype="relative"):
+def read_openmx_hamiltonian(scfout, version, endian="little", pathtype="relative", spin=None):
     file_scfout = Path(sys.argv[0]).parent / scfout
     if version == 3.9:
-        return hamiltonian.Openmx(MXscfoutV3(file_scfout, endian=endian, pathtype=pathtype))
+        return hamiltonian.Openmx(MXscfoutV3(file_scfout, endian=endian, pathtype=pathtype), spin=spin)
     elif version == 3.8:
         return hamiltonian.Openmx(MXscfoutV0(file_scfout, endian=endian, pathtype=pathtype))
 

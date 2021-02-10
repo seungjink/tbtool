@@ -28,7 +28,7 @@ class Occupation:
         self.energies = None
         self.overlaps = None
 
-        self.previous_mesh = np.zeros([1,3])
+        self.previous_mesh = None
         self.overlap_gamma = None
     
     def is_mesh_changed(self, mesh):
@@ -39,7 +39,7 @@ class Occupation:
 
     def _calculate_mesh(self):
         logger.info(f'Diagonalizing wavefunction on given meshes.')
-        chk = self.is_mesh_changed(self.kmesh.mesh)
+        chk = self.is_mesh_changed(self.kmesh.get())
         if chk :
             kpts = self.kmesh.get()
             mesh_calculator = base.Eigen(self.hamiltonian, kpts)
@@ -135,5 +135,5 @@ class Pdos:
             self.kmesh = pickle.load(f)
             self.occupation.kmesh = self.kmesh
 
-        self.occupation.previous_mesh = self.kmesh.mesh
+        self.occupation.previous_mesh = self.kmesh.get()
         self.occupation.previous_unitcell = self.kmesh.unitcell

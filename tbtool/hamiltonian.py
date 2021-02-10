@@ -47,11 +47,20 @@ class Wannier(Hamiltonian):
 class Openmx(Hamiltonian):
     TYPE = "OpenMX Hamiltonian"
 
-    def __init__(self, mxscfout, unit='ev'):
+    def __init__(self, mxscfout, unit='ev', spin=None):
         self.scfout = mxscfout
         self.scfout.readfile()
-        self.hopping, self.overlap, self.cell, self.dimension, self.chemp \
-            = self.scfout.get_hamiltonian()
+        if spin == 'up':
+            self.hopping, self.overlap, self.cell, self.dimension, self.chemp \
+                = self.scfout.get_hamiltonian()
+            self.hopping = self.hopping[0]
+        elif spin == 'down':
+            self.hopping, self.overlap, self.cell, self.dimension, self.chemp \
+                = self.scfout.get_hamiltonian()
+            self.hopping = self.hopping[1]
+        else:
+            self.hopping, self.overlap, self.cell, self.dimension, self.chemp \
+                = self.scfout.get_hamiltonian()
         self.unit = {'energy': 'ev'}
     
     def get(self, kpt):

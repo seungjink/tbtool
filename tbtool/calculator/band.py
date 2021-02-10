@@ -22,7 +22,7 @@ class Band:
         self.kpath = kpath
     
     def calculate(self, n=None):
-        kpts = self.kpath.get(n)
+        kpts = self.kpath.get()
         mesh_calculator = base.Eigenvalues(self.hamiltonian, kpts)
         evs = mesh_calculator.calculate()
         return evs

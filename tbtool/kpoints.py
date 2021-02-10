@@ -214,36 +214,31 @@ class Kpath(object):
         self.kpts = np.array(kpts)
         self.label = label
         self.unitcell = unitcell
+        self._n = None
         self.n = n
 
-    def get(self, n=None):
-        """Generate line mesh between each k points.
+    @property
+    def n(self):
+        return self._n
 
-        Args:
-            n (int or list[int]): Number of sample points to generate.
-                if n is `int`, every k point is divided by same `n`.
+    @n.setter
+    def n(self, n):
+        try:
+            iter(n)
+            self._n = np.array(n)
+        except TypeError:
+            self._n = np.array([n]*(self.kpts.shape[0]-1))
+
+    def get(self):
+        """Generate line mesh between each k points.
 
         Returns:
             numpy.array: An array of line mesh.
         """
 
-        if n is None:
-            n = self.n
-        
-        try:
-            iter(n)
-            n = np.array(n)
-        except TypeError:
-            n = np.array([n]*(self.kpts.shape[0]-1))
-
-        if n.shape[0] != self.kpts.shape[0]-1:
-            logger.error('----- ERROR -----')
-            logger.error(f'Number of interval {n.shape[0]} does not match to kpoint shape {self.kpts.shape[0]}')
-            exit(1)
-
-        kmesh = np.zeros([np.sum(n), 3])
+        kmesh = np.zeros([np.sum(self.n), 3])
         idx = 0
-        for i, steps in enumerate(n):
+        for i, steps in enumerate(self.n):
             kmesh[idx: idx + steps, 0] = \
                 np.linspace(self.kpts[i, 0], self.kpts[i+1, 0], steps)
             kmesh[idx: idx + steps, 1] = \
@@ -253,22 +248,35 @@ class Kpath(object):
             idx += steps
         
         return kmesh
+    
+    def get_linear(self, label=None):
+        if self.unitcell is not None:
+            if np.array(self.unitcell).shape != (3, 3):
+                logger.error("----- ERROR -----")
+                logger.error("Shape of unitcell = %s does not match to (3,3)", np.array(unitcell))
+                exit(1)
+            reciprocal_cell = (np.linalg.inv(self.unitcell) * np.pi * 2).T
 
-#        if self.unitcell is not None:
-#            unitcell_np = np.array(self.unitcell)
-#            if unitcell_np.shape != (3, 3):
-#                #               logger.error("\u2500\u2500\u2500\u2500\u2500 ERROR \u2500\u2500\u2500\u2500\u2500")
-#                #               logger.error("Shape of unitcell = %s does not match to (3,3)", unitcell_np)
-#                exit(1)
-#
-#            klinear = np.zeros(np.sum(n), dtype=float)
-#            dk = kmesh[1:, :] - kmesh[:-1, :]
-#            dk_length = np.linalg.norm(
-#                np.matmul(dk, unitcell_np[np.newaxis, :, :])[0], axis=1)
-#            for i in range(1, np.sum(n)):
-#                klinear[i] = klinear[i-1] + dk_length[i-1]
-#        else:
-#            klinear = np.linspace(0, 1, np.sum(n))
+            kmesh = self.get()
+
+            count_k = kmesh.shape[0]
+            klinear = np.zeros(count_k, dtype=float)
+
+            dk = kmesh[1:, :] - kmesh[:-1, :]
+            dk_length = np.linalg.norm(
+                np.matmul(dk, reciprocal_cell[np.newaxis, :, :])[0], axis=1)
+            for i in range(1, count_k):
+                klinear[i] = klinear[i-1] + dk_length[i-1]
+        else:
+            klinear = np.linspace(0, 1, count_k)
+
+        labelidx = [0]
+        for i in range(self.n.shape[0]):
+            labelidx.append(self.n[i] + labelidx[i])
+        labelidx[-1] -= 1
+        return klinear, klinear[labelidx]
+#        if label is not None:
+#            return klinear, label
 #
 #        if return_label:
 #            klabel = self.label
