@@ -158,7 +158,7 @@ class Openmx:
                                 orbname = f'{n+1}{orbital_angular}'
                                 self.basis.add(spin, i+1, orbname)
     def get_projector(self, wavefunctions):
-        result = np.zeros((len(wavefunctions), self.basis.getdimension()))
+        result = np.zeros((len(wavefunctions), self.basis.getdimension()), dtype=np.complex)
         for i, wavefunction in enumerate(wavefunctions):
             orbital = wavefunction[:-1]
             coeff = wavefunction[-1]
@@ -167,7 +167,7 @@ class Openmx:
 
     def get_projector_by_angle(self, wavefunctions):
 
-        result = np.zeros((len(wavefunctions), self.basis.getdimension()))
+        result = np.zeros((len(wavefunctions), self.basis.getdimension()), dtype=np.complex)
         spinshift = self.basis.getdimension()/2
 
         for i, wavefunction in enumerate(wavefunctions):
