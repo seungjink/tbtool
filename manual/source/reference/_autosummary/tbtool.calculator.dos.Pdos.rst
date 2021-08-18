@@ -17,7 +17,6 @@ tbtool.calculator.dos.Pdos
    
       ~Pdos.__init__
       ~Pdos.calculate
-      ~Pdos.is_mesh_changed
       ~Pdos.load
    
    

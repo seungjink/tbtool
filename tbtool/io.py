@@ -44,6 +44,8 @@ def read_hwr(filepath):
         a2 = np.asarray(lines[5].rsplit(), dtype=float)
         a3 = np.asarray(lines[6].rsplit(), dtype=float)
 
+        chemp = np.asarray(lines[8].rsplit()[2], dtype=float)
+
         unitcell = np.array([a1, a2, a3]) * \
             unit.get_conversion_factor('length', 'bohr', 'angstrom')
 
@@ -56,7 +58,7 @@ def read_hwr(filepath):
             else:
                 hopping[n, int(line[0])-1, int(line[1])-1] \
                     = float(line[2]) + 1j * float(line[3])
-        return hamiltonian.Wannier(hopping, cell, filename=file_hwr.resolve())
+        return hamiltonian.Wannier(hopping, cell, filename=file_hwr.resolve(), chemp=chemp)
 
 
 class ByteReader(object):

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tbtool.kpoints.Kline &#8212; tbtool 0.1 documentation</title>
+    <title>tbtool.calculator.band.Band &#8212; tbtool 0.1 documentation</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -42,8 +42,8 @@
     <script src="../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tbtool.kpoints.Kmesh" href="tbtool.kpoints.Kmesh.html" />
-    <link rel="prev" title="tbtool.kpoints.monkhorst_pack" href="tbtool.kpoints.monkhorst_pack.html" />
+    <link rel="next" title="tbtool.calculator.base" href="tbtool.calculator.base.html" />
+    <link rel="prev" title="tbtool.calculator.band" href="tbtool.calculator.band.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
   </head>
@@ -107,6 +107,10 @@
                     <ul>
                     
                         <li class="">
+                            <a href="tbtool.basis.html">tbtool.basis</a>
+                        </li>
+                    
+                        <li class="active">
                             <a href="tbtool.calculator.html">tbtool.calculator</a>
                         </li>
                     
@@ -118,7 +122,7 @@
                             <a href="tbtool.io.html">tbtool.io</a>
                         </li>
                     
-                        <li class="active">
+                        <li class="">
                             <a href="tbtool.kpoints.html">tbtool.kpoints</a>
                         </li>
                     
@@ -158,22 +162,12 @@
               
               <div>
                 
-  <div class="section" id="tbtool-kpoints-kline">
-<h1>tbtool.kpoints.Kline<a class="headerlink" href="#tbtool-kpoints-kline" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tbtool-calculator-band-band">
+<h1>tbtool.calculator.band.Band<a class="headerlink" href="#tbtool-calculator-band-band" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="tbtool.kpoints.Kline">
-<em class="property">class </em><code class="sig-prename descclassname">tbtool.kpoints.</code><code class="sig-name descname">Kline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kpts</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">unitcell</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.kpoints.Kline" title="Permalink to this definition">¶</a></dt>
+<dt id="tbtool.calculator.band.Band">
+<em class="property">class </em><code class="sig-prename descclassname">tbtool.calculator.band.</code><code class="sig-name descname">Band</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hamiltonian</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">kpath</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.calculator.band.Band" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Mesh points for line path in reciprocal space</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>kpts</strong> (<em>arr_like</em>) – Set of discrete K points specifiying the lines.</p></li>
-<li><p><strong>label</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Label name for each kpt. The shape should be the same as kpts. Defaults to None.</p></li>
-<li><p><strong>unitcell</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Three unit cell vectors defining the Brillouin zone. Defaults to None.</p></li>
-</ul>
-</dd>
-</dl>
 <p class="rubric">Methods</p>
 <table class="longtable table autosummary">
 <colgroup>
@@ -181,32 +175,14 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(kpts[, label, unitcell])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([hamiltonian, kpath])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tbtool.kpoints.Kline.get" title="tbtool.kpoints.Kline.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(n)</p></td>
-<td><p>Generate line mesh between each k points.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code>([n])</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt id="tbtool.kpoints.Kline.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.kpoints.Kline.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate line mesh between each k points.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>n</strong> (<em>int</em><em> or </em><em>list</em><em>[</em><em>int</em><em>]</em>) – Number of sample points to generate.
-if n is <cite>int</cite>, every k point is divided by same <cite>n</cite>.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>array of line mesh</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>numpy.array</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -217,8 +193,8 @@ if n is <cite>int</cite>, every k point is divided by same <cite>n</cite>.</p>
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="tbtool.kpoints.monkhorst_pack.html" title="previous page">tbtool.kpoints.monkhorst_pack</a>
-    <a class='right-next' id="next-link" href="tbtool.kpoints.Kmesh.html" title="next page">tbtool.kpoints.Kmesh</a>
+    <a class='left-prev' id="prev-link" href="tbtool.calculator.band.html" title="previous page">tbtool.calculator.band</a>
+    <a class='right-next' id="next-link" href="tbtool.calculator.base.html" title="next page">tbtool.calculator.base</a>
 
               </div>
               

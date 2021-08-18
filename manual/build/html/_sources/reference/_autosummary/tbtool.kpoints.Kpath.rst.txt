@@ -1,9 +1,9 @@
-﻿tbtool.kpoints.Kline
+tbtool.kpoints.Kpath
 ====================
 
 .. currentmodule:: tbtool.kpoints
 
-.. autoclass:: Kline
+.. autoclass:: Kpath
    :members:                                    
    :show-inheritance:                           
    :inherited-members:                          
@@ -15,11 +15,18 @@
 
    .. autosummary::
    
-      ~Kline.__init__
-      ~Kline.get
+      ~Kpath.__init__
+      ~Kpath.get
+      ~Kpath.get_linear
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Kpath.n
    
    

@@ -21,6 +21,8 @@ class Overlap:
         self.u34 = None
         self.u41 = None
 
+        self.energy = None
+
         self.previous_mesh = np.zeros([1,3])
         self.previous_unitcell = np.zeros([3,3])
 
@@ -32,10 +34,17 @@ class Overlap:
             kpts = self.kmesh.get()
             n1, n2 = self.kmesh.mesh[:2]
 
+            ens = []
             evs = []
             for kpt in kpts:
-                evs.append(self.hamiltonian.diagonalize(kpt, eigvals_only=False)[1])
+                en, ev = self.hamiltonian.diagonalize(kpt, eigvals_only=False)
+                ens.append(en)
+                evs.append(ev)
+
+            self.energy = np.array(ens, dtype=float)
+            self.energy = np.reshape(self.energy, (n1, n2, self.energy.shape[-1]))
             evs = np.array(evs)
+
             evs_n0m0 = np.reshape(evs, (n1, n2, evs.shape[1], evs.shape[2]))
             evs_n1m0 = np.roll(evs_n0m0, -1, axis=0)
             evs_n1m1 = np.roll(evs_n1m0, -1, axis=1)
@@ -104,3 +113,26 @@ class ChernNumber:
         chern_abelian = np.sum(fk, axis=(0, 1)) / 2.0 / np.pi
         return chern_abelian
 
+class AnomalousHallConductivity:
+    def __init__(self, hamiltonian, kmesh=None):
+        self.hamiltonian = hamiltonian
+        assert isinstance(kmesh, kp.Kmesh), f'Argument {kmesh} must be kpoints.Kmesh'
+        self.kmesh = kmesh
+        self.berrycurvature = BerryCurvature(hamiltonian=self.hamiltonian, kmesh=self.kmesh)
+
+    def calculate(self, emin=-1, emax=1, ediff=0.01):
+        assert emin < emax, f'emin = {emin} has to be smaller than emax = {emax}'
+
+        fk = self.berrycurvature.calculate() / 2.0 / np.pi
+        en = self.berrycurvature.overlap.energy
+
+        fk = np.reshape(fk, (-1, fk.shape[-1]))
+        en = np.reshape(en, (-1, en.shape[-1]))
+
+        ahc = []
+        energies = np.arange(emin, emax, ediff)
+
+        for energy in energies:
+            ahc.append(np.sum(fk, axis=0, where=(en <= energy)))
+
+        return energies, np.array(ahc, float)

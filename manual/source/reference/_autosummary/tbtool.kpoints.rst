@@ -26,8 +26,8 @@ tbtool.kpoints
       :toctree:                                          
       :template: custom-class-template.rst               
    
-      Kline
       Kmesh
+      Kpath
    
    
 

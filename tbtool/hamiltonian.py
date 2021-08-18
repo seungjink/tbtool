@@ -10,23 +10,24 @@ class Hamiltonian(ABC):
 
     @abstractmethod
     def get(self):
-        # return Hamiltonian matrix.
+        # return Hamiltonian matrix that can be diagonalized.
         pass
 
     @abstractmethod
     def diagonalize(self):
-        # return eigenvalue(+eigenvectors)
+        # return eigenvalue(+eigenvectors) after diagonalization.
         pass
 
 
 class Wannier(Hamiltonian):
     TYPE = "Wannier Hamiltonian"
 
-    def __init__(self, hopping, cell, filename=None):
+    def __init__(self, hopping, cell, filename=None, chemp=0):
         self.hopping = np.array(hopping)
         self.cell = np.array(cell)
         self.filename = filename
-        self.unit = {"energy: eV"}
+        self.unit = {'energy': 'ev'}
+        self.chemp = chemp
 
     def get(self, kpt):
         exp_ikr = np.exp(1j * 2.0 * np.pi * np.dot(self.cell, kpt))
@@ -37,12 +38,14 @@ class Wannier(Hamiltonian):
         olp = np.eye(ham.shape[0]) # * ham.shape[1]).reshape((ham.shape))
         return ham, olp
 
-    def diagonalize(self, kpt, eigvals_only=True):
+    def diagonalize(self, kpt, eigvals_only=True, fermilevel=True):
         ham = self.get(kpt)[0]
         if eigvals_only:
-            return eigvalsh(ham)
+            en = eigvalsh(ham, lower=False)
+            return (en - self.chemp) * unit.get_conversion_factor('energy', 'hartree', self.unit['energy'])
         else:
-            return eigh(ham)
+            en, ev = eigh(ham, lower=False)
+            return ((en - self.chemp) * unit.get_conversion_factor('energy', 'hartree', self.unit['energy']), ev)
 
 class Openmx(Hamiltonian):
     TYPE = "OpenMX Hamiltonian"

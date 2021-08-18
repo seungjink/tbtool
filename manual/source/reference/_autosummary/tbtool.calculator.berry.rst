@@ -19,6 +19,7 @@ tbtool.calculator.berry
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      AnomalousHallConductivity
       BerryCurvature
       ChernNumber
       Overlap

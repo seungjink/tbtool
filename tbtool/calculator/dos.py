@@ -4,6 +4,7 @@ import logging
 import pickle
 from pathlib import Path
 import numpy as np
+import scipy.optimize as optimize
 import tbtool.kpoints as kp
 import tbtool.unit as unit
 import tbtool.calculator.algo as algo
@@ -100,10 +101,42 @@ class Occupation:
 
         res = np.moveaxis(occ, -1, 0)
         return res
+
+class Cdos:
+    def __init__(self, hamiltonian=None, kmesh=None, method='2d'):
+        self.hamiltonian = hamiltonian
+        assert isinstance(kmesh, kp.Kmesh), 'Argument {} must be kpoints.Kmesh'.format(kmesh)
+        self.kmesh = kmesh
+        self.method = method
+        self.previous_mesh = None
+        self.energies = None
+    
+    def _initialize_energy(self):
+        # If any change of kpoints are detected, re-diagonalize.
+        if not np.array_equal(self.kmesh.get(), self.previous_mesh):
+            logger.info(f'Diagonalizing wavefunction on given meshes.')
+            kpts = self.kmesh.get()
+            mesh_calculator = base.Eigen(self.hamiltonian, kpts)
+            ens, evs = mesh_calculator.calculate()
+            self.energies = np.array(ens)
+            self.previous_mesh = self.kmesh.get()
+        else:
+            pass
+
+    def calculate(self, erange):
+        self._initialize_energy()
+        identity_fn = np.zeros(self.energies.shape, dtype=float) + 1
+
+        # 2d tetrahedron step method -> pass 2d kpts. self.kmesh.get()[:,:2]
+        if self.method == '2d':
+            dos_result = algo.integrate_step_2d_tetra(self.kmesh.get()[:,:2], self.energies, identity_fn, erange)
+#        elif self.method == '3d':
+#            dos_result = algo.integrate_delta_3d_tetra(self.kmesh.get(), self.occupation.energies, res, erange)
+        return dos_result[0]
+
 class Pdos:
     def __init__(self, hamiltonian=None, kmesh=None, method='3d'):
         self.hamiltonian = hamiltonian
-#        assert isinstance(kmesh, kp.Kmesh), 'Argument {} must be kpoints.Kmesh'.format(kmesh)
         self.kmesh = kmesh
         self.method = method
 
@@ -137,3 +170,19 @@ class Pdos:
 
         self.occupation.previous_mesh = self.kmesh.get()
         self.occupation.previous_unitcell = self.kmesh.unitcell
+class Fermi:
+    def __init__(self, hamiltonian=None, kmesh=None, method='2d'):
+        self.hamiltonian = hamiltonian
+        assert isinstance(kmesh, kp.Kmesh), 'Argument {} must be kpoints.Kmesh'.format(kmesh)
+        self.kmesh = kmesh
+        self.method = method
+    
+    def calculate(self, n:float, emin=-20, emax=20):
+        cdos = Cdos(self.hamiltonian, self.kmesh, method=self.method)
+
+        def g(x):
+            return cdos.calculate(x) - n
+
+        return optimize.bisect(g, emin, emax)
+
+        

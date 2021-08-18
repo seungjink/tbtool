@@ -158,7 +158,7 @@ class Kmesh:
         """Return mesh array
 
         Args:
-            conversion (bool, optional): If True, meshes are represented in unitcell basis. Defaults to True.
+            conversion (bool, optional): If True, meshes are represented in unitcell basis. Defaults to False.
 
         Returns:
             (numpy.array): mesh array

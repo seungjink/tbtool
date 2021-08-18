@@ -4,8 +4,6 @@ import pickle
 from scipy import sparse
 from pathlib import Path
 class Eigenvalues:
-
-
     def __init__(self, hamiltonian, kpts):
         self.hamiltonian = hamiltonian
         self.kpts = kpts

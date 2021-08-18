@@ -19,6 +19,7 @@ tbtool.calculator.dos
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      Occupation
       Pdos
    
    

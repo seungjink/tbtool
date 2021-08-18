@@ -8,7 +8,7 @@ class Basis:
     Set basis information during the calculation.
 
     Args:
-        quantumstate (list[str] or str): Set of index names for each basis state.
+        quantumstate (list[str] or str): Set of index names for each basis ket.
 
     Example:
        >>> basis = Basis(["spin", "orbital", "site"])
@@ -23,7 +23,27 @@ class Basis:
         self._quantumnumber = quantumnumber
         self.basis = []
         self.index = {}
-        self.state = namedtuple("state", self._quantumnumber)
+        self.state = namedtuple("ket", self._quantumnumber)
+    
+    def get(self, n=None):
+        """
+        get nth basis ket 
+
+        Args:
+           n (int, optional): index number of basis. If none, return all basis kets.
+
+        Example:
+           >>> basis = Basis("orbital")
+           >>> basis.add('s'); basis.add('p')
+           >>> bs.get()
+           [ket(orbital='s'), ket(orbital='p')]
+           >>> bs.get(0)
+           [ket(orbital='s')]
+        """
+        if (n != None) and (isinstance(n, int)):
+            return self.basis[n]
+        else:
+            return self.basis
 
     def add(self, *args):
         """
@@ -40,7 +60,7 @@ class Basis:
             >>> bs.add(0, "px", (0,0,1))
             >>> bs.add(1, "s", (1,1,1))
             >>> print(bs.basis)
-            [state(spin=0, orbital='px', site=(0, 0, 1)), state(spin=1, orbital='s', site=(1, 1, 1))]
+            [ket(spin=0, orbital='px', site=(0, 0, 1)), ket(spin=1, orbital='s', site=(1, 1, 1))]
         """
         try:
             newbasis = self.state(*args)
@@ -51,7 +71,7 @@ class Basis:
         self.basis.append(newbasis)
         self.index[args] = len(self.basis)-1
     
-    def getindex(self, *args):
+    def get_by_index(self, *args):
         return self.index[args]
 
     def getfieldname(self):
