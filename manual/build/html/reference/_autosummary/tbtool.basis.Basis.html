@@ -65,7 +65,7 @@
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
         
-        <li class="nav-item active">
+        <li class="nav-item ">
             <a class="nav-link" href="../index.html">API reference</a>
         </li>
         
@@ -98,42 +98,6 @@
   
     <ul class="nav bd-sidenav">
         
-        
-          
-            
-  
-                <li class="active">
-                    <a href="tbtool.html">tbtool</a>
-                    <ul>
-                    
-                        <li class="active">
-                            <a href="tbtool.basis.html">tbtool.basis</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="tbtool.calculator.html">tbtool.calculator</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="tbtool.hamiltonian.html">tbtool.hamiltonian</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="tbtool.io.html">tbtool.io</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="tbtool.kpoints.html">tbtool.kpoints</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="tbtool.unit.html">tbtool.unit</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
         
         
       </ul>
@@ -171,7 +135,7 @@
 <p>Set basis information during the calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>quantumstate</strong> (<em>list</em><em>[</em><em>str</em><em>] or </em><em>str</em>) – Set of index names for each basis state.</p>
+<dd class="field-odd"><p><strong>quantumstate</strong> (<em>list</em><em>[</em><em>str</em><em>] or </em><em>str</em>) – Set of index names for each basis ket.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -192,6 +156,12 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#tbtool.basis.Basis.add" title="tbtool.basis.Basis.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args)</p></td>
 <td><p>Add basis to current list.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tbtool.basis.Basis.get" title="tbtool.basis.Basis.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>([n])</p></td>
+<td><p>get nth basis ket</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_by_index</span></code>(*args)</p></td>
+<td><p></p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tbtool.basis.Basis.getdimension" title="tbtool.basis.Basis.getdimension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getdimension</span></code></a>()</p></td>
 <td><p><dl class="field-list simple">
 <dt class="field-odd">returns</dt>
@@ -208,13 +178,10 @@
 </dl>
 </p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getindex</span></code>(*args)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tbtool.basis.Basis.permute" title="tbtool.basis.Basis.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a>(permutation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tbtool.basis.Basis.permute" title="tbtool.basis.Basis.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a>(permutation)</p></td>
 <td><p>Exchange the order using permutation index.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tbtool.basis.Basis.swap" title="tbtool.basis.Basis.swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap</span></code></a>(i, j)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tbtool.basis.Basis.swap" title="tbtool.basis.Basis.swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap</span></code></a>(i, j)</p></td>
 <td><p>Exchange the order between two basis</p></td>
 </tr>
 </tbody>
@@ -234,7 +201,27 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;px&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bs</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
-<span class="go">[state(spin=0, orbital=&#39;px&#39;, site=(0, 0, 1)), state(spin=1, orbital=&#39;s&#39;, site=(1, 1, 1))]</span>
+<span class="go">[ket(spin=0, orbital=&#39;px&#39;, site=(0, 0, 1)), ket(spin=1, orbital=&#39;s&#39;, site=(1, 1, 1))]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tbtool.basis.Basis.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.basis.Basis.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>get nth basis ket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – index number of basis. If none, return all basis kets.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">basis</span> <span class="o">=</span> <span class="n">Basis</span><span class="p">(</span><span class="s2">&quot;orbital&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basis</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">);</span> <span class="n">basis</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bs</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="go">[ket(orbital=&#39;s&#39;), ket(orbital=&#39;p&#39;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">[ket(orbital=&#39;s&#39;)]</span>
 </pre></div>
 </div>
 </dd></dl>

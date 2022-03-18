@@ -1,7 +1,10 @@
+import sys
 import functools
 import logging
 import numpy as np
 import tbtool.kpoints as kp
+import tbtool.calculator.algo as algo
+import tbtool.calculator.dos as dos
 
 logging.basicConfig(
     level=logging.INFO,
@@ -101,6 +104,23 @@ class BerryCurvature:
 
         return Fk_abelian
 
+    def calculate_only_filled_bands(self, n:float=None, chempo:float=None, chempo_kmesh=None):
+
+        fk = self.calculate() / 2.0 / np.pi
+        en = self.overlap.energy
+
+        fk = np.reshape(fk, (-1, fk.shape[-1]))
+        en = np.reshape(en, (-1, en.shape[-1]))
+
+        if not chempo:
+            if chempo_kmesh != None:
+                chempo_calculator = dos.Fermi(hamiltonian=self.hamiltonian, kmesh=chempo_kmesh)
+            else:
+                chempo_calculator = dos.Fermi(hamiltonian=self.hamiltonian, kmesh=self.kmesh)
+            chempo = chempo_calculator.calculate(n)
+        return np.sum(fk, axis=0, where=(en <= chempo))
+#    def calculate_only_filled_bands(self, n:float, chempo_kmesh=None):
+
 class ChernNumber:
     def __init__(self, hamiltonian, kmesh=None):
         self.hamiltonian = hamiltonian
@@ -121,6 +141,19 @@ class AnomalousHallConductivity:
         self.berrycurvature = BerryCurvature(hamiltonian=self.hamiltonian, kmesh=self.kmesh)
 
     def calculate(self, emin=-1, emax=1, ediff=0.01):
+        """
+        calculate AHC band by band in the given energy range.
+
+        Args:
+           emin (float, optional): lower energy bound of AHC calculation.
+           emax (float, optional): upper energy bound of AHC calculation.
+           ediff (float, optional): energy spacing in the region.
+
+        Returns:
+            numpy.ndarray: [(emax-emin)/emin, band_count] shaped AHC values. 
+
+        """
+
         assert emin < emax, f'emin = {emin} has to be smaller than emax = {emax}'
 
         fk = self.berrycurvature.calculate() / 2.0 / np.pi
@@ -135,4 +168,63 @@ class AnomalousHallConductivity:
         for energy in energies:
             ahc.append(np.sum(fk, axis=0, where=(en <= energy)))
 
-        return energies, np.array(ahc, float)
+        return energies, np.array(ahc, dtype=float)
+    
+    def calculate_only_filled_bands(self, n:float=None, chempo:float=None, chempo_kmesh=None):
+        """
+        calculate the AHC value for the given electron number n or chemical potential.
+
+        Args:
+           n (float, optional): Number of electron in the system.
+           chempo (float, optional): Chemical potential in the system.
+           chempo_kmesh (kpoint.kmesh, optional):
+               Kpoint mesh used for chemical potential calculation.
+               If not given, original Kpoint mesh is used.
+        
+        If electron number `n` is given, chemical potential is automatically calculated.
+        If chemical potential `chempo` is given, this value is directly used.
+        So, only one of either `n` or `chempo` should be given.
+
+        In general case, we need less Kpoints for the determination of
+        chemical potential than the case of Berry curvature.
+        So, if you want to use different Kpoints for these two calculations,
+        set `chempo_kmesh`.
+
+        Returns:
+            float: Sum of AHC 
+            ndarray: AHC at each k point
+        """
+
+        if n is not None and chempo is not None:
+            logger.error('----- ERROR -----')
+            logger.error('Please set only one value of electron number and chemical potential.')
+            logger.error(f'electron number    : {n}')
+            logger.error(f'chemical potential : {chempo}')
+            sys.exit(1)
+        elif n is None and chempo is None:
+            logger.error('----- ERROR -----')
+            logger.error('Please set one value of electron number or chemical potential.')
+            logger.error(f'electron number    : {n}')
+            logger.error(f'chemical potential : {chempo}')
+            sys.exit(1)
+
+        fk = self.berrycurvature.calculate() / 2.0 / np.pi
+        en = self.berrycurvature.overlap.energy
+
+        #fk = np.reshape(fk, (-1, fk.shape[-1]))
+        #en = np.reshape(en, (-1, en.shape[-1]))
+
+        if chempo is not None:
+            if not chempo.isdigit():
+                logger.error('----- ERROR -----')
+                logger.error('The value of chemical potential has to be number type')
+                logger.error(f'chemical potential : {chempo}')
+                sys.exit(1)
+
+            if chempo_kmesh != None:
+                chempo_calculator = dos.Fermi(hamiltonian=self.hamiltonian, kmesh=chempo_kmesh)
+            else:
+                chempo_calculator = dos.Fermi(hamiltonian=self.hamiltonian, kmesh=self.kmesh)
+            chempo = chempo_calculator.calculate(n)
+        ahc = np.sum(fk, where=(en <= chempo), axis=2)
+        return ahc

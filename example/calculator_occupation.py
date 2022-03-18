@@ -16,6 +16,7 @@ kpt = kp.Kpath([[0,0,0],[0.5,0,0],[1/3,1/3,0], [0,0,0]])
 #kmesh = kp.Kmesh([5,5,1])
 doscalc = dos.Occupation(hamiltonian=ham, kmesh=kpt)
 a = doscalc.calculate()
+print(a.shape)
 #print(a[2, :, 4])
 # a [ scatrer_size, N_kpt, N_band]
 

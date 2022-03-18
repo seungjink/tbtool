@@ -110,6 +110,10 @@
                             <a href="tbtool.basis.html">tbtool.basis</a>
                         </li>
                     
+                        <li class="">
+                            <a href="tbtool.calcualtor.html">tbtool.calcualtor</a>
+                        </li>
+                    
                         <li class="active">
                             <a href="tbtool.calculator.html">tbtool.calculator</a>
                         </li>
@@ -124,6 +128,10 @@
                     
                         <li class="">
                             <a href="tbtool.kpoints.html">tbtool.kpoints</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="tbtool.tests.html">tbtool.tests</a>
                         </li>
                     
                         <li class="">
@@ -178,11 +186,67 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(hamiltonian[, kmesh])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code>([emin, emax, ediff])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tbtool.calculator.berry.AnomalousHallConductivity.calculate" title="tbtool.calculator.berry.AnomalousHallConductivity.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>([emin, emax, ediff])</p></td>
+<td><p>calculate AHC band by band in the given energy range.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tbtool.calculator.berry.AnomalousHallConductivity.calculate_only_filled_bands" title="tbtool.calculator.berry.AnomalousHallConductivity.calculate_only_filled_bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_only_filled_bands</span></code></a>([n, chempo, …])</p></td>
+<td><p>calculate the AHC value for the given electron number n or chemical potential.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt id="tbtool.calculator.berry.AnomalousHallConductivity.calculate">
+<code class="sig-name descname">calculate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">emin</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">emax</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">ediff</span><span class="o">=</span><span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.calculator.berry.AnomalousHallConductivity.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate AHC band by band in the given energy range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>emin</strong> (<em>float</em><em>, </em><em>optional</em>) – lower energy bound of AHC calculation.</p></li>
+<li><p><strong>emax</strong> (<em>float</em><em>, </em><em>optional</em>) – upper energy bound of AHC calculation.</p></li>
+<li><p><strong>ediff</strong> (<em>float</em><em>, </em><em>optional</em>) – energy spacing in the region.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[(emax-emin)/emin, band_count] shaped AHC values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tbtool.calculator.berry.AnomalousHallConductivity.calculate_only_filled_bands">
+<code class="sig-name descname">calculate_only_filled_bands</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chempo</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chempo_kmesh</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.calculator.berry.AnomalousHallConductivity.calculate_only_filled_bands" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate the AHC value for the given electron number n or chemical potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>float</em><em>, </em><em>optional</em>) – Number of electron in the system.</p></li>
+<li><p><strong>chempo</strong> (<em>float</em><em>, </em><em>optional</em>) – Chemical potential in the system.</p></li>
+<li><p><strong>chempo_kmesh</strong> (<em>kpoint.kmesh</em><em>, </em><em>optional</em>) – Kpoint mesh used for chemical potential calculation.
+If not given, original Kpoint mesh is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If electron number <cite>n</cite> is given, chemical potential is automatically calculated.
+If chemical potential <cite>chempo</cite> is given, this value is directly used.
+So, only one of either <cite>n</cite> or <cite>chempo</cite> should be given.</p>
+<p>In general case, we need less Kpoints for the determination of
+chemical potential than the case of Berry curvature.
+So, if you want to use different Kpoints for these two calculations,
+set <cite>chempo_kmesh</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Sum of AHC
+ndarray: AHC at each k point</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>

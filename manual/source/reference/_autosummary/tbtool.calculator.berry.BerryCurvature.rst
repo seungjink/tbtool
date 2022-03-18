@@ -1,4 +1,4 @@
-tbtool.calculator.berry.BerryCurvature
+﻿tbtool.calculator.berry.BerryCurvature
 ======================================
 
 .. currentmodule:: tbtool.calculator.berry
@@ -17,6 +17,7 @@ tbtool.calculator.berry.BerryCurvature
    
       ~BerryCurvature.__init__
       ~BerryCurvature.calculate
+      ~BerryCurvature.calculate_only_filled_bands
    
    
 

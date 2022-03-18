@@ -1,4 +1,4 @@
-tbtool.calculator.berry.AnomalousHallConductivity
+﻿tbtool.calculator.berry.AnomalousHallConductivity
 =================================================
 
 .. currentmodule:: tbtool.calculator.berry
@@ -17,6 +17,7 @@ tbtool.calculator.berry.AnomalousHallConductivity
    
       ~AnomalousHallConductivity.__init__
       ~AnomalousHallConductivity.calculate
+      ~AnomalousHallConductivity.calculate_only_filled_bands
    
    
 

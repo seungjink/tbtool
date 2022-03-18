@@ -1,4 +1,4 @@
-tbtool.hamiltonian
+﻿tbtool.hamiltonian
 ==================
 
 .. automodule:: tbtool.hamiltonian

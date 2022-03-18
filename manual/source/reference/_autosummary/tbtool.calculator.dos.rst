@@ -1,4 +1,4 @@
-tbtool.calculator.dos
+﻿tbtool.calculator.dos
 =====================
 
 .. automodule:: tbtool.calculator.dos
@@ -19,6 +19,8 @@ tbtool.calculator.dos
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      Cdos
+      Fermi
       Occupation
       Pdos
    

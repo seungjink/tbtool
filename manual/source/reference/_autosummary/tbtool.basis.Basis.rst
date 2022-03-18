@@ -17,9 +17,10 @@ tbtool.basis.Basis
    
       ~Basis.__init__
       ~Basis.add
+      ~Basis.get
+      ~Basis.get_by_index
       ~Basis.getdimension
       ~Basis.getfieldname
-      ~Basis.getindex
       ~Basis.permute
       ~Basis.swap
    

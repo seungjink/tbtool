@@ -1,4 +1,4 @@
-tbtool.calculator.dos.Occupation
+﻿tbtool.calculator.dos.Occupation
 ================================
 
 .. currentmodule:: tbtool.calculator.dos
@@ -17,6 +17,7 @@ tbtool.calculator.dos.Occupation
    
       ~Occupation.__init__
       ~Occupation.calculate
+      ~Occupation.calculate_density_matrix
       ~Occupation.is_mesh_changed
    
    

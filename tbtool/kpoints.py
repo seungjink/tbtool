@@ -9,7 +9,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
 def monkhorst_pack(arr, with_boundary=False, gamma_center=True):
     """Generate Monkhorst-Pack meshes.
 
@@ -27,6 +26,10 @@ def monkhorst_pack(arr, with_boundary=False, gamma_center=True):
         numpy.array: [k1[, k2, k3]] shaped array.
 
     Example:
+
+
+    Basic usage
+
        >>> kpts = monkhorst_pack([2,2,1])
        >>> print(kpts)
        [[-0.25 -0.25  0.  ]
@@ -35,7 +38,7 @@ def monkhorst_pack(arr, with_boundary=False, gamma_center=True):
         [ 0.25  0.25  0.  ]]
 
 
-    Two dimensionary mesh
+    Two dimensional mesh
 
        >>> kpts = monkhorst_pack([2,2])
        >>> print(kpts)
@@ -64,31 +67,33 @@ def monkhorst_pack(arr, with_boundary=False, gamma_center=True):
         [0.5 0.  0. ]
         [0.5 0.5 0. ]]
     """
+    input_arr = np.array(arr)
+    arr_shape = input_arr.shape[0]
     try:
-        input_arr = np.array(arr)
-        arr_shape = input_arr.shape[0]
         kpts = np.indices(input_arr).transpose(
             np.roll(np.arange(arr_shape+1), -1)).reshape((-1, arr_shape))
         arr_offset = np.zeros(arr_shape)
         arr_shiftorigin = np.zeros(arr_shape)
-    except ValueError:
+    except TypeError:
         logger.error('----- ERROR -----')
         logger.error(
-            'Check your input grid %s matches the shape of [n,[l m]], array', arr)
+            'All values in input array have to be integer.'
+        )
+        logger.error(
+            f'Your input : {arr}'
+        )
         sys.exit(1)
-    arr_divider = np.array(input_arr)
 
     if gamma_center:
         if not with_boundary:
-            arr_shiftorigin = 1/2 - 1/2/arr_divider
+            arr_shiftorigin = 1/2 - 1/2/input_arr
         else:
             arr_shiftorigin[input_arr != 1] = 1/2
 
     if with_boundary:
-        arr_divider[input_arr > 1] -= 1
+        input_arr[input_arr > 1] -= 1
 
-    return (kpts + arr_offset) / arr_divider - arr_shiftorigin
-
+    return (kpts + arr_offset) / input_arr - arr_shiftorigin
 
 class Kmesh:
     """
@@ -96,7 +101,7 @@ class Kmesh:
 
     Args:
         mesh (list[int]): Mesh size
-        unitcell (list, optional): Specifies reciprocal vector.
+        cartesian (list, optional): Specifies reciprocal vector.
             This parameter is needed when you want to geneate mesh
             wirh respect to new cell vectors. For example, if you want
             to generate mesh with respect to new cell vectors
@@ -112,35 +117,41 @@ class Kmesh:
 
             >>> mesh = Kmesh([2,2,1], unitcell=[[1,1,0],[1,-1,0],[0,0,1]])
 
-        with_boundary (bool, optional): Include boundary values. Defaults to False.
-        gamma_center (bool, optional): Shift mesh center to origin. Defaults to True.
+        with_boundary (bool, optional): Include boundary mesh values. Defaults to False.
+        gamma_center (bool, optional): Shift mesh to be centered at the origin. Defaults to True.
 
     Example:
        >>> mesh = Kmesh([2,2,1])
        >>> mesh = Kmesh([5])
        >>> mesh = Kmesh([5], with_boundary=True)
 
+
+    Expanding unitcell range
+
+       >>> mesh = Kmesh([2,2,1], expansion=[2,1,1])
+       >>> print(kpts)
+       [[-0.75 -0.25  0.  ]
+        [-0.75  0.25  0.  ]
+        [-0.25 -0.25  0.  ]
+        [-0.25  0.25  0.  ]
+        [ 0.25 -0.25  0.  ]
+        [ 0.25  0.25  0.  ]
+        [ 0.75 -0.25  0.  ]
+        [ 0.75  0.25  0.  ]]
+
     """
 
-    def __init__(self, mesh, unitcell=np.eye(3), with_boundary=False, gamma_center=True):
-        self._mesh = np.array(mesh, dtype=int)
-        self._unitcell = unitcell
+    def __init__(self, mesh, unitcell=None, with_boundary=False, gamma_center=True, expansion=[1,1,1]):
+        self.expansion = np.array(expansion)
         self.with_boundary = with_boundary
         self.gamma_center = gamma_center
-
-        if unitcell is not None:
-            self.unitcell = np.array(unitcell)
-            if self.unitcell.shape != (self.mesh.shape[0], self.mesh.shape[0]):
-                logger.error('----- ERROR -----')
-                logger.error(
-                    'Dimension of unitcell {} does not match to mesh size {}'
-                    .format(self.unitcell, self.mesh)
-                )
-                sys.exit(1)
+        self._mesh = np.array(mesh, dtype=int)
+        self._unitcell = np.eye(
+            self.mesh.shape[0]) if not unitcell else unitcell
 
     @property
     def mesh(self):
-        return self._mesh
+        return self._mesh * self.expansion
 
     @mesh.setter
     def mesh(self, mesh):
@@ -152,9 +163,18 @@ class Kmesh:
 
     @unitcell.setter
     def unitcell(self, unitcell):
+        cell = np.array(unitcell)
+        if cell.shape != (self.mesh.shape[0], self.mesh.shape[0]):
+            logger.error('----- ERROR -----')
+            logger.error(
+                'Dimension of unitcell {} does not match to mesh size {}'
+                .format(self.unitcell, self.mesh)
+            )
+            sys.exit(1)
+
         self._unitcell = np.array(unitcell, dtype=float)
 
-    def get(self, conversion=False):
+    def get(self):
         """Return mesh array
 
         Args:
@@ -171,33 +191,31 @@ class Kmesh:
             [ 0.25,-0.25],
             [ 0.25, 0.25]]
 
-        Changing unitcell vector
-
-           >>> mesh = Kmesh([2,2,1], unitcell=[[0,0,1],[1,0,0],[0,1,0]])
-           >>> mesh.get()
-           [[-0.25, 0, -0.25],
-            [0.25,  0, -0.25],
-            [-0.25,  0, 0.25],
-            [0.25,  0, 0.25]]
         """
+        mesh_expanded = self.mesh
         kmesh = monkhorst_pack(
-            self.mesh, with_boundary=self.with_boundary, gamma_center=self.gamma_center)
-        if conversion:
-            return np.matmul(kmesh, self.unitcell)
-        else:
-            return kmesh
+            mesh_expanded, with_boundary=self.with_boundary, gamma_center=self.gamma_center
+        ) * self.expansion
+        return kmesh
 
     def get_cartesian(self):
-        """Generate meshgrid in Cartesian coordinates.
+        """Return mesh with in cartesian coordinate.
 
-        Returns
-        -------
-        numpy.ndarray
-            (self.mesh)-shaped mesh points in Cartesian untis.
+        The fractional corindates of self.get() is converted to cartesian coordinate
+        using the `unitcell` vectors.
+
+           >>> mesh = Kmesh([2,2,1], unitcell=[[4,0,0],[0,2,0],[0,0,1]])
+           >>> mesh.get_cartesian()
+           [[-1.  -0.5  0. ]
+            [-1.   0.5  0. ]
+            [ 1.  -0.5  0. ]
+            [ 1.   0.5  0. ]]
+
+        Returns:
+            (numpy.array): mesh points in Cartesian untis.
+
         """
-        kmesh = monkhorst_pack(
-            self.mesh, with_boundary=self.with_boundary, gamma_center=self.gamma_center)
-        kmesh = np.matmul(kmesh, self.unitcell)
+        kmesh = np.matmul(self.get(), self.unitcell)
         return kmesh
 
 
@@ -246,14 +264,15 @@ class Kpath(object):
             kmesh[idx: idx + steps, 2] = \
                 np.linspace(self.kpts[i, 2], self.kpts[i+1, 2], steps)
             idx += steps
-        
+
         return kmesh
-    
+
     def get_linear(self, label=None):
         if self.unitcell is not None:
             if np.array(self.unitcell).shape != (3, 3):
                 logger.error("----- ERROR -----")
-                logger.error("Shape of unitcell = %s does not match to (3,3)", np.array(unitcell))
+                logger.error(
+                    "Shape of unitcell = %s does not match to (3,3)", np.array(unitcell))
                 exit(1)
             reciprocal_cell = (np.linalg.inv(self.unitcell) * np.pi * 2).T
 

@@ -102,6 +102,41 @@ class Occupation:
         res = np.moveaxis(occ, -1, 0)
         return res
 
+    def calculate_density_matrix(self, occupation='dual'):
+        logger.info('Calculate occupation numbers')
+        self._calculate_mesh()
+
+        ek, vk, olpk = self.energies, self.wavefunctions, self.overlaps 
+
+        if self.overlap_gamma is None:
+            h, olpk_gamma = self.hamiltonian.get([0,0,0])
+            self.overlap_gamma = olpk_gamma
+
+        projector = np.eye(self.overlap_gamma.shape[0])
+
+        # vk.shape = [Nk, Nbasis, Nbasis]
+        # vk[N, :, J] = Jth eigenvector at Nth k point.
+        # occ_dual   = (<n,k|S|proj><proj|n,k> + H.C.) * 0.5
+        # occ_full   = <n,k|S|proj><proj|S|n,k>
+        # occ_onsite = <n,k|proj><proj|n,k>
+        if occupation == 'dual':
+            ls = np.matmul(np.transpose(vk, axes=(0,2,1)).conj(), olpk)
+            occ_full = np.matmul(ls, projector)
+            occ_onsite = np.matmul(np.transpose(vk, axes=(0,2,1)).conj(), projector)
+            occ_dual = np.multiply(occ_full.conj(), occ_onsite)
+            occ = occ_dual.real
+        elif occupation == 'full':
+            ls = np.matmul(np.transpose(vk, axes=(0,2,1)).conj(), olpk)
+            occ_full = np.matmul(ls, projector)
+            occ = np.square(np.absolute(occ_full))
+        elif occupation == 'onsite':
+            occ_onsite = np.matmul(np.transpose(vk, axes=(0,2,1)).conj(), projector)
+            occ = np.square(np.absolute(occ_onsite))
+
+        res = np.moveaxis(occ, -1, 0)
+        return res
+
+
 class Cdos:
     def __init__(self, hamiltonian=None, kmesh=None, method='2d'):
         self.hamiltonian = hamiltonian

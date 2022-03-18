@@ -111,6 +111,10 @@
                         </li>
                     
                         <li class="">
+                            <a href="tbtool.calcualtor.html">tbtool.calcualtor</a>
+                        </li>
+                    
+                        <li class="">
                             <a href="tbtool.calculator.html">tbtool.calculator</a>
                         </li>
                     
@@ -124,6 +128,10 @@
                     
                         <li class="active">
                             <a href="tbtool.kpoints.html">tbtool.kpoints</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="tbtool.tests.html">tbtool.tests</a>
                         </li>
                     
                         <li class="">
@@ -166,14 +174,14 @@
 <h1>tbtool.kpoints.Kmesh<a class="headerlink" href="#tbtool-kpoints-kmesh" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="tbtool.kpoints.Kmesh">
-<em class="property">class </em><code class="sig-prename descclassname">tbtool.kpoints.</code><code class="sig-name descname">Kmesh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mesh</span></em>, <em class="sig-param"><span class="n">unitcell</span><span class="o">=</span><span class="default_value">array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])</span></em>, <em class="sig-param"><span class="n">with_boundary</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">gamma_center</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.kpoints.Kmesh" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">tbtool.kpoints.</code><code class="sig-name descname">Kmesh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mesh</span></em>, <em class="sig-param"><span class="n">unitcell</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">with_boundary</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">gamma_center</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">expansion</span><span class="o">=</span><span class="default_value">[1, 1, 1]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.kpoints.Kmesh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Generate k point mesh</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mesh</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – Mesh size</p></li>
-<li><p><strong>unitcell</strong> (<em>list</em><em>, </em><em>optional</em>) – <p>Specifies reciprocal vector.
+<li><p><strong>cartesian</strong> (<em>list</em><em>, </em><em>optional</em>) – <p>Specifies reciprocal vector.
 This parameter is needed when you want to geneate mesh
 wirh respect to new cell vectors. For example, if you want
 to generate mesh with respect to new cell vectors</p>
@@ -190,8 +198,8 @@ to generate mesh with respect to new cell vectors</p>
 </pre></div>
 </div>
 </p></li>
-<li><p><strong>with_boundary</strong> (<em>bool</em><em>, </em><em>optional</em>) – Include boundary values. Defaults to False.</p></li>
-<li><p><strong>gamma_center</strong> (<em>bool</em><em>, </em><em>optional</em>) – Shift mesh center to origin. Defaults to True.</p></li>
+<li><p><strong>with_boundary</strong> (<em>bool</em><em>, </em><em>optional</em>) – Include boundary mesh values. Defaults to False.</p></li>
+<li><p><strong>gamma_center</strong> (<em>bool</em><em>, </em><em>optional</em>) – Shift mesh to be centered at the origin. Defaults to True.</p></li>
 </ul>
 </dd>
 </dl>
@@ -199,6 +207,19 @@ to generate mesh with respect to new cell vectors</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Kmesh</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Kmesh</span><span class="p">([</span><span class="mi">5</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Kmesh</span><span class="p">([</span><span class="mi">5</span><span class="p">],</span> <span class="n">with_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Expanding unitcell range</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Kmesh</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">expansion</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span>
+<span class="go">[[-0.75 -0.25  0.  ]</span>
+<span class="go"> [-0.75  0.25  0.  ]</span>
+<span class="go"> [-0.25 -0.25  0.  ]</span>
+<span class="go"> [-0.25  0.25  0.  ]</span>
+<span class="go"> [ 0.25 -0.25  0.  ]</span>
+<span class="go"> [ 0.25  0.25  0.  ]</span>
+<span class="go"> [ 0.75 -0.25  0.  ]</span>
+<span class="go"> [ 0.75  0.25  0.  ]]</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -211,11 +232,11 @@ to generate mesh with respect to new cell vectors</p>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(mesh[, unitcell, with_boundary, …])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tbtool.kpoints.Kmesh.get" title="tbtool.kpoints.Kmesh.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>([conversion])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tbtool.kpoints.Kmesh.get" title="tbtool.kpoints.Kmesh.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>()</p></td>
 <td><p>Return mesh array</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tbtool.kpoints.Kmesh.get_cartesian" title="tbtool.kpoints.Kmesh.get_cartesian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_cartesian</span></code></a>()</p></td>
-<td><p>Generate meshgrid in Cartesian coordinates.</p></td>
+<td><p>Return mesh with in cartesian coordinate.</p></td>
 </tr>
 </tbody>
 </table>
@@ -236,7 +257,7 @@ to generate mesh with respect to new cell vectors</p>
 </table>
 <dl class="py method">
 <dt id="tbtool.kpoints.Kmesh.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">conversion</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.kpoints.Kmesh.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.kpoints.Kmesh.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return mesh array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -258,27 +279,28 @@ to generate mesh with respect to new cell vectors</p>
 <span class="go"> [ 0.25, 0.25]]</span>
 </pre></div>
 </div>
-<p>Changing unitcell vector</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Kmesh</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">unitcell</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="go">[[-0.25, 0, -0.25],</span>
-<span class="go"> [0.25,  0, -0.25],</span>
-<span class="go"> [-0.25,  0, 0.25],</span>
-<span class="go"> [0.25,  0, 0.25]]</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt id="tbtool.kpoints.Kmesh.get_cartesian">
 <code class="sig-name descname">get_cartesian</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tbtool.kpoints.Kmesh.get_cartesian" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate meshgrid in Cartesian coordinates.</p>
+<dd><p>Return mesh with in cartesian coordinate.</p>
+<p>The fractional corindates of self.get() is converted to cartesian coordinate
+using the <cite>unitcell</cite> vectors.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Kmesh</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">unitcell</span><span class="o">=</span><span class="p">[[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">get_cartesian</span><span class="p">()</span>
+<span class="go">[[-1.  -0.5  0. ]</span>
+<span class="go"> [-1.   0.5  0. ]</span>
+<span class="go"> [ 1.  -0.5  0. ]</span>
+<span class="go"> [ 1.   0.5  0. ]]</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>(self.mesh)-shaped mesh points in Cartesian untis.</p>
+<dd class="field-odd"><p>mesh points in Cartesian untis.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>numpy.ndarray</p>
+<dd class="field-even"><p>(numpy.array)</p>
 </dd>
 </dl>
 </dd></dl>

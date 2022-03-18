@@ -12,18 +12,20 @@ from tbtool.calculator import berry, algo, dos, band
 
 #ham = io.read_hwr("./crsite3_2684.HWR")
 ham = io.read_hwr("./theta_90_n_2.0.HWR")
-kpt = kp.Kmesh([20,20, 1])
+kpt = kp.Kmesh([41,41, 1])
 
-#calc = berry.AnomalousHallConductivity(ham, kmesh=kpt)
+calc = berry.AnomalousHallConductivity(ham, kmesh=kpt)
+c = calc.calculate_only_filled_bands(n=1)
+print(c)
 
-kpt = kp.Kpath([[0,0,0],[0.5,0,0],[1/3,1/3,0], [0,0,0]])
-bandcalc = band.Band(hamiltonian=ham, kpath=kpt)
-res = bandcalc.calculate(100)
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-plt.plot(np.arange(90), res)
-plt.show()
+#kpt = kp.Kpath([[0,0,0],[0.5,0,0],[1/3,1/3,0], [0,0,0]])
+#bandcalc = band.Band(hamiltonian=ham, kpath=kpt)
+#res = bandcalc.calculate(100)
+#import matplotlib
+#matplotlib.use('TkAgg')
+#import matplotlib.pyplot as plt
+#plt.plot(np.arange(90), res)
+#plt.show()
 
 #e, f = calc.calculate()
 

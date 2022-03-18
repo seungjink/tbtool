@@ -338,7 +338,7 @@ def integrate_delta_3d_tetra(kmesh, bandenergy, fn, w):
 
     return results
 
-def integrate_step_2d_tetra(kmesh, bandenergy, fn, w):
+def integrate_step_2d_tetra(kmesh, bandenergy, fn, w, fntype=float):
     """Integrate step function by 2d tetrahecron method.
 
     This function calculates the following step funciton integral on the Brillouin zone using 2d tetrahedron method.
@@ -396,7 +396,7 @@ def integrate_step_2d_tetra(kmesh, bandenergy, fn, w):
     tetrahedron_count = tri.simplices.shape[0]
 
     # Generate fn * dos values 
-    results = np.zeros([fn_count, w_count])
+    results = np.zeros([fn_count, w_count], dtype=fntype)
 
     # min and max energy of each band
     band_emin = np.amin(bandenergy, axis=0)
@@ -463,7 +463,7 @@ def integrate_step_2d_tetra(kmesh, bandenergy, fn, w):
                     f3 * (w1 + w2 - 2 * w3)
                 ) / 12.0 / (energy-w1)
 
-                results[:, idx] +=  np.sum(tmpocc * tmpfn, axis=1, dtype=float)
+                results[:, idx] +=  np.sum(tmpocc * tmpfn, axis=1, dtype=fntype)
 
                 # Tetra 3
                 idx_tetra = np.logical_and(
@@ -494,7 +494,7 @@ def integrate_step_2d_tetra(kmesh, bandenergy, fn, w):
                     f3 * ( w1 + w2 - 2*w3)
                 ) / 12.0 / (w3 - energy) * tmpocc
 
-                results[:, idx] += np.sum(tmpfn, axis=1, dtype=float)
+                results[:, idx] += np.sum(tmpfn, axis=1, dtype=fntype)
 
                 # Tetra 4
 
@@ -509,10 +509,9 @@ def integrate_step_2d_tetra(kmesh, bandenergy, fn, w):
                     f1 + f2 + f3
                 ) / 3.0 / tetrahedron_count
 
-                results[:, idx] += np.sum(tmpfn, axis=1, dtype=float)
+                results[:, idx] += np.sum(tmpfn, axis=1, dtype=fntype)
 
                 # No Contribution
-
     return results
 
 
