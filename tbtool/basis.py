@@ -71,7 +71,7 @@ class Basis:
         self.basis.append(newbasis)
         self.index[args] = len(self.basis)-1
     
-    def get_by_index(self, *args):
+    def getindex(self, *args):
         return self.index[args]
 
     def getfieldname(self):

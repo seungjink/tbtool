@@ -10,10 +10,40 @@ from tbtool.kpoints import monkhorst_pack
 import tbtool.kpoints as kp
 from tbtool.calculator import berry, algo, dos, band
 
-ham = io.read_hwr("./crsite3.HWR")
+#ham = io.read_hwr("./symGra.scfout")
+ham = io.read_openmx_hamiltonian("./symGra.scfout", version=3.8)
 
-kpt = kp.Kmesh([20,20, 1])
-kpt_dos = kp.Kmesh([30,30, 1])
+
+kpt = kp.Kmesh([42, 42, 1], gamma_center=False)
+
+chemcalc=dos.Fermi(hamiltonian=ham, kmesh=kpt, method='2d')
+c = chemcalc.calculate(n=4.0)
+print(c)
+#
+#cdos=dos.Cdos(hamiltonian=ham, kmesh=kpt)
+#n=50
+#res = cdos.calculate(erange=np.linspace(-1,1,n))
+#s = np.zeros([n, 2])
+#s[:,0] = np.linspace(-1,1,50)
+#s[:, 1] = res
+#print(s)
+
+#calc = base.Eigenvalues(hamiltonian=ham, kpts=kpt.get())
+#res = calc.calculate()
+#
+#print(np.max(res[res<0]))
+#print(np.min(res[res>0]))
+#calc = dos.Pdos(hamiltonian=ham, kmesh=kpt, method='2d')
+#n=601
+#res = np.sum(calc.calculate(erange=np.linspace(-20, 40, n)), axis=0)
+#print(res.shape)
+#import matplotlib.pyplot as plt
+#import matplotlib
+#matplotlib.use('TkAgg')
+#plt.plot(np.linspace(-20,40,n),res)
+#plt.show()
+
+#kpt_dos = kp.Kmesh([30,30, 1])
 
 ############# Band calc #############
 #kpt_band = kp.Kpath([[0,0,0],[0.5,0,0],[1/3,1/3,0], [0,0,0]])
@@ -37,8 +67,6 @@ kpt_dos = kp.Kmesh([30,30, 1])
 #chemical_potential = calc.calculate(number_of_electrons)
 #print(f"Calculated chemical potential : {chemical_potential}")
 ############### END ###############
-kpts = kp.Kmesh([2,2,1], expansion=[2,1,1])
-print(kpts.get())
 
 ############# Chern number calc #############
 #kpt_chern = kp.Kmesh([40,40, 1])
